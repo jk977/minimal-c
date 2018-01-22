@@ -1,7 +1,10 @@
 CC ?= gcc
 AS ?= as
 LD ?= ld
-BUILDPATH ?= ./build
+
+BUILD ?= ./build
+SRC ?= ./src
+LIB ?= ./lib
 
 ifdef DEBUG
 	CFLAGS += -g
@@ -10,21 +13,21 @@ endif
 
 .PHONY: all clean purge
 
-all: $(BUILDPATH)/main.o $(BUILDPATH)/bootstrap.o
-	$(LD) $(LDFLAGS) -o $(BUILDPATH)/main.elf $^
+all: $(BUILD)/main.o $(BUILD)/bootstrap.o
+	$(LD) $(LDFLAGS) -o $(BUILD)/main.elf $^
 
 clean:
 	rm -f build/*.o
 
 purge: clean
-	rm -f $(BUILDPATH)/*.elf
+	rm -f $(BUILD)/*.elf
 
-$(BUILDPATH):
+$(BUILD):
 	mkdir -p $@
 
-$(BUILDPATH)/%.o: %.c
-	$(CC) $(CFLAGS) -c -o $@ $^
+$(BUILD)/%.o: $(SRC)/%.c $(BUILD) 
+	$(CC) $(CFLAGS) -c -o $@ $<
 
-$(BUILDPATH)/%.o: %.s
-	$(AS) $(ASFLAGS) -o $@ $^
+$(BUILD)/%.o: $(LIB)/%.s $(BUILD) 
+	$(AS) $(ASFLAGS) -o $@ $<
 
