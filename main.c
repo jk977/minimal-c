@@ -1,45 +1,30 @@
-#define SYSCALL_WRITE 1
-#define SYSCALL_EXIT 60
+/*
+ * Hello world program written without the C standard library.
+ */
 
 typedef enum { STDIN, STDOUT, STDERR } FileDescriptor;
 
-static int strlen(char const* str) {
-    int length = 0;
+int sys_write(FileDescriptor fd, char const* buffer, int size);
+void sys_exit(int status);
 
-    while (*(str++)) { /* check if char is null and increment position */
-        length++;
+static int str_length(char const* str) {
+    int len = 0;
+
+    while (*str != 0) {
+        len++;
+        str++;
     }
 
-    return length;
+    return len;
 }
 
-int write(char const* buffer, FileDescriptor fd) {
-    int length = strlen(buffer);
-    int status;
-
-    __asm__(
-        "syscall"
-        : "=a"(status)          /* status = rax */
-        : "a"(SYSCALL_WRITE),   /* rax */
-          "d"(length),          /* rdx */
-          "S"(buffer),          /* rsi */
-          "D"(fd)               /* rdi */
-    );
-
-    return status;
-}
-
-static void exit(int status) {
-    __asm__(
-        "syscall"
-        : /* no output */
-        : "a"(SYSCALL_EXIT),
-          "D"(status)
-    );
+int print(char const* buffer) {
+    int len = str_length(buffer);
+    return sys_write(STDOUT, buffer, len);
 }
 
 void _start(void) {
-    write("Hello, world!\n", STDOUT);
-    exit(0);
+    print("Hello, world!\n");
+    sys_exit(0);
 }
 

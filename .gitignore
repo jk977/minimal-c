@@ -1,1 +1,8 @@
-main
+# executables
+/main
+
+# object files
+/build/
+
+# vim temp files
+*.sw[a-z]
