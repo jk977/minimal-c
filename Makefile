@@ -7,16 +7,18 @@ SRC ?= ./src
 LIB ?= ./lib
 
 ARCH ?= 64
+BOOTSTRAP = bootstrap$(ARCH).o
+
+# assuming build cpu is 64-bit
+ifeq ($(ARCH),32)
+	CFLAGS += -m32
+	ASFLAGS += --32
+	LDFLAGS += -melf_i386
+endif
 
 ifdef DEBUG
 	CFLAGS += -g
 	ASFLAGS += -g
-endif
-
-ifeq ($(ARCH),32)
-	BOOTSTRAP = bootstrap32.o
-else
-	BOOTSTRAP = bootstrap64.o
 endif
 
 .PHONY: all clean purge
