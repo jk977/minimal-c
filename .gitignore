@@ -1,7 +1,3 @@
-# executables
-/main
-
-# object files
 /build/
 
 # vim temp files

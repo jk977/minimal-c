@@ -6,10 +6,10 @@ BUILD ?= ./build
 SRC ?= ./src
 LIB ?= ./lib
 
+# ARCH can either be 32 or 64
 ARCH ?= 64
 BOOTSTRAP = bootstrap$(ARCH).o
 
-# assuming build cpu is 64-bit
 ifeq ($(ARCH),32)
 	CFLAGS += -m32
 	ASFLAGS += --32
