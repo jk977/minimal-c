@@ -6,15 +6,23 @@ BUILD ?= ./build
 SRC ?= ./src
 LIB ?= ./lib
 
+ARCH ?= 64
+
 ifdef DEBUG
 	CFLAGS += -g
 	ASFLAGS += -g
 endif
 
+ifeq ($(ARCH),32)
+	BOOTSTRAP = bootstrap32.o
+else
+	BOOTSTRAP = bootstrap64.o
+endif
+
 .PHONY: all clean purge
 
-all: $(BUILD)/main.o $(BUILD)/bootstrap.o
-	$(LD) $(LDFLAGS) -o $(BUILD)/main.elf $^
+all: $(BUILD)/main.o $(BUILD)/$(BOOTSTRAP)
+	$(LD) $(LDFLAGS) -nostdlib -o $(BUILD)/main.elf $^
 
 clean:
 	rm -f build/*.o
