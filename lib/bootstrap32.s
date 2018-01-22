@@ -1,14 +1,33 @@
 .intel_syntax noprefix
 
 .text
-.globl sys_write, sys_exit
-.type sys_write, %function
-.type sys_exit, %function
+.globl sys_read, sys_write, sys_exit
+.type sys_read,     %function
+.type sys_write,    %function
+.type sys_exit,     %function
+
+sys_read:
+    # param 1 (ebp+16): number of bytes to read
+    # param 2 (ebp+12): pointer to buffer to read into
+    # param 3 (ebp+8):  file descriptor to read from
+    push ebp
+    mov ebp, esp
+    push ebx
+
+    mov edx, [ebp+16]   # byte count in edx
+    mov ecx, [ebp+12]   # buffer pointer in ecx
+    mov ebx, [ebp+8]    # file descriptor in ebx
+    mov eax, 3          # system call value for read
+    int 0x80
+
+    pop ebx
+    leave
+    ret
 
 sys_write:
-    # param 1 (ebp+16): file descriptor to write to
+    # param 1 (ebp+16): length of string to print
     # param 2 (ebp+12): pointer to null-terminated 8-bit character array
-    # param 3 (ebp+8): length of string to print
+    # param 3 (ebp+8):  file descriptor to write to
     push ebp
     mov ebp, esp
     push ebx
