@@ -12,9 +12,13 @@ BUILD ?= ./build
 SRC ?= ./src
 LIB ?= ./lib
 
-# ARCH can either be 32 or 64
-ARCH ?= 64
-BOOTSTRAP = bootstrap$(ARCH).o
+# ARCH can be one of the following (see lib/*.s):
+# 	- x86_64
+# 	- x86_32
+# 	- armhf
+
+ARCH ?= x86_64
+BOOTSTRAP = $(ARCH).o
 
 ifeq ($(ARCH),32)
 	CFLAGS += -m32
