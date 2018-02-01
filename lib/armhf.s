@@ -1,5 +1,5 @@
 .text
-.globl sys_read, sys_write, sys_exit
+.globl sys_read, sys_write, sys_exit, _start
 .type sys_read,     %function
 .type sys_write,    %function
 .type sys_exit,     %function
@@ -29,4 +29,3 @@ sys_exit:
 _start:
     bl main
     bl sys_exit
-    ret
