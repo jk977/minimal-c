@@ -20,7 +20,7 @@ LIB ?= ./lib
 ARCH ?= x86_64
 BOOTSTRAP = $(ARCH).o
 
-ifeq ($(ARCH),32)
+ifeq ($(ARCH),x86_32)
 	CFLAGS += -m32
 	ASFLAGS += --32
 	LDFLAGS += -melf_i386
