@@ -1,3 +1,9 @@
+# Options:
+# 	- all:		compile object files and main.c, create executable
+# 	- lib:		generate object file with bitness ${ARCH} (32 or 64)
+# 	- clean: 	remove all object files from build directory
+# 	- purge:	clean and remove executables from build directory
+
 CC ?= gcc
 AS ?= as
 LD ?= ld
@@ -21,13 +27,15 @@ ifdef DEBUG
 	ASFLAGS += -g
 endif
 
-.PHONY: all clean purge
+.PHONY: all lib clean purge
 
 all: $(BUILD)/main.o $(BUILD)/$(BOOTSTRAP)
 	$(LD) $(LDFLAGS) -nostdlib -o $(BUILD)/main.elf $^
 
+lib: $(BUILD)/$(BOOTSTRAP)
+
 clean:
-	rm -f build/*.o
+	rm -f $(BUILD)/*.o
 
 purge: clean
 	rm -f $(BUILD)/*.elf
