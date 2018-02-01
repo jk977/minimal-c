@@ -25,6 +25,7 @@ int print(char const* buffer) {
 
 void _start(void) {
     print("Hello, world!\n");
+    print("Goodbye, world!\n");
     sys_exit(0);
 }
 

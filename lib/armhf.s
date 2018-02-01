@@ -10,6 +10,7 @@ sys_read:
     @param 3 (r2): file descriptor to read from
     mov r7, #3 @system call value for read
     swi 0x0
+    mov pc, lr
 
 sys_write:
     @param 1 (r0): file descriptor to write to
@@ -17,9 +18,11 @@ sys_write:
     @param 3 (r2): length of string to print
     mov r7, #4 @system call value for write
     swi 0x0
+    mov pc, lr
 
 sys_exit:
     @param 1 (r0): exit status
     mov r7, #1
     swi 0x0
+    mov pc, lr
     
