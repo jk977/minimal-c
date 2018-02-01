@@ -2,10 +2,7 @@
  * Hello world program written without the C standard library.
  */
 
-typedef enum { STDIN, STDOUT, STDERR } FileDescriptor;
-
-int sys_write(FileDescriptor fd, char const* buffer, int size);
-void sys_exit(int status);
+#include "bootstrap.h"
 
 static int str_length(char const* str) {
     int len = 0;
@@ -23,9 +20,9 @@ int print(char const* buffer) {
     return sys_write(STDOUT, buffer, len);
 }
 
-void _start(void) {
+int main(void) {
     print("Hello, world!\n");
     print("Goodbye, world!\n");
-    sys_exit(0);
+    return 0;
 }
 

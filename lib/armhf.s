@@ -14,7 +14,7 @@ sys_read:
 
 sys_write:
     @param 1 (r0): file descriptor to write to
-    @param 2 (r1): pointer to null-terminated 8-bit character array
+    @param 2 (r1): pointer to null-terminated array of 8-bit characters
     @param 3 (r2): length of string to print
     mov r7, #4 @system call value for write
     swi 0x0
@@ -26,3 +26,7 @@ sys_exit:
     swi 0x0
     mov pc, lr
     
+_start:
+    bl main
+    bl sys_exit
+    ret

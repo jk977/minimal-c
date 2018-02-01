@@ -1,6 +1,6 @@
 # Options:
 # 	- all:		compile object files and main.c, create executable
-# 	- lib:		generate object file with bitness ${ARCH} (32 or 64)
+# 	- lib:		generate bootstrap object file only
 # 	- clean: 	remove all object files from build directory
 # 	- purge:	clean and remove executables from build directory
 
@@ -11,6 +11,7 @@ LD ?= ld
 BUILD ?= ./build
 SRC ?= ./src
 LIB ?= ./lib
+INCLUDE ?= ./include
 
 # ARCH can be one of the following (see lib/*.s):
 # 	- x86_64
@@ -18,7 +19,6 @@ LIB ?= ./lib
 # 	- armhf
 
 ARCH ?= x86_64
-BOOTSTRAP = $(ARCH).o
 
 ifeq ($(ARCH),x86_32)
 	CFLAGS += -m32
@@ -33,10 +33,10 @@ endif
 
 .PHONY: all lib clean purge
 
-all: $(BUILD)/main.o $(BUILD)/$(BOOTSTRAP)
+all: $(BUILD)/main.o $(BUILD)/bootstrap.o
 	$(LD) $(LDFLAGS) -nostdlib -o $(BUILD)/main.elf $^
 
-lib: $(BUILD)/$(BOOTSTRAP)
+lib: $(BUILD)/bootstrap.o
 
 clean:
 	rm -f $(BUILD)/*.o
@@ -47,9 +47,9 @@ purge: clean
 $(BUILD):
 	mkdir -p $@
 
-$(BUILD)/%.o: $(SRC)/%.c $(BUILD) 
-	$(CC) $(CFLAGS) -c -o $@ $<
-
-$(BUILD)/%.o: $(LIB)/%.s $(BUILD) 
+$(BUILD)/bootstrap.o: $(LIB)/$(ARCH).s $(BUILD) 
 	$(AS) $(ASFLAGS) -o $@ $<
+
+$(BUILD)/%.o: $(SRC)/%.c $(BUILD) 
+	$(CC) $(CFLAGS) -I$(INCLUDE) -c -o $@ $<
 
