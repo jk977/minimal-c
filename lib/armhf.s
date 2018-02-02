@@ -25,7 +25,7 @@ sys_exit:
     mov r7, #1
     swi 0x0
     mov pc, lr
-    
+
 _start:
     bl main
     bl sys_exit
