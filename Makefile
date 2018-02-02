@@ -8,6 +8,9 @@ CC ?= gcc
 AS ?= as
 LD ?= ld
 
+COMPAT32 ?= 0	# set to 1 if building 32-bit on a 64-bit system
+DEBUG ?= 0		# set to 1 for debugging symbols
+
 BUILD ?= ./build
 SRC ?= ./src
 LIB ?= ./lib
@@ -21,12 +24,14 @@ INCLUDE ?= ./include
 ARCH ?= x86_64
 
 ifeq ($(ARCH),x86_32)
+ifeq ($(COMPAT32),1)
 	CFLAGS += -m32
 	ASFLAGS += --32
 	LDFLAGS += -melf_i386
 endif
+endif
 
-ifdef DEBUG
+ifeq ($(DEBUG),1)
 	CFLAGS += -g
 	ASFLAGS += -g
 endif

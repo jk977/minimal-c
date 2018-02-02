@@ -22,7 +22,7 @@ sys_write:
 
 sys_exit:
     @param 1 (r0): exit status
-    mov r7, #1
+    mov r7, #1 @system call value for exit
     swi 0x0
     mov pc, lr
 
